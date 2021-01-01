@@ -57,13 +57,12 @@ dependencies {
 
     //多功能工具库
     implementation "com.github.tamsiree.RxTool:RxKit:v2.4.1"
-    
+
     //UI库
     implementation "com.github.tamsiree.RxTool:RxUI:v2.4.1"
 
     //(依赖RxUI库时，需要额外依赖 cardview 库)
-    //cardview
-    implementation 'com.android.support:cardview-v7:27.1.1'
+
 
     //Zxing扫描与生成二维码条形码 支付宝 微信
     implementation "com.github.tamsiree.RxTool:RxFeature:v2.4.1"
