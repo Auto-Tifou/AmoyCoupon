@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Amoy_coupon</string>
+    <string name="app_name">淘劵</string>
+
+<!--    tab-->
+    <string name="text_home">首页</string>
+    <string name="text_selected">精选</string>
+    <string name="text_red_packet">特惠</string>
+    <string name="text_search">搜索</string>
+
+<!--    hint-->
+    <string name="text_home_search_hint">&#160;&#160;&#160;搜索优惠券..</string>
 </resources>

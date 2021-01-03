@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.amoy_coupon"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -33,6 +33,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -56,16 +57,13 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 
     //多功能工具库
-    implementation "com.github.tamsiree.RxTool:RxKit:v2.4.1"
+    implementation 'com.github.tamsiree.RxTool:RxKit:2.6.2'
 
     //UI库
-    implementation "com.github.tamsiree.RxTool:RxUI:v2.4.1"
-
-    //(依赖RxUI库时，需要额外依赖 cardview 库)
-
+    implementation 'com.github.tamsiree.RxTool:RxUI:2.6.2'
 
     //Zxing扫描与生成二维码条形码 支付宝 微信
-    implementation "com.github.tamsiree.RxTool:RxFeature:v2.4.1"
+    implementation 'com.github.tamsiree.RxTool:RxFeature:2.6.2'
     implementation 'com.google.zxing:android-core:3.3.0'
     implementation 'com.google.zxing:core:3.3.2'
 }
