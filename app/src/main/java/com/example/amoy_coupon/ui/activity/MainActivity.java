@@ -22,10 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.main_navigation_bar)
     public BottomNavigationView mNavigationView;
+
     private HomeFragment mHomeFragment;
     private RedPacketFragment mRedPacketFragment;
     private SelectedFragment mSelectedFragment;
     private SearchFragment mSearchFragment;
+
     private FragmentManager mFm;
     private Unbinder mBind;
 
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
 
         initFragment();
         initListener();
-
     }
 
     @Override
