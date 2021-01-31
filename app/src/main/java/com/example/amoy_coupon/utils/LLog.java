@@ -5,7 +5,7 @@ import android.util.Log;
 /**
  * log工具类，不需要全部log的话直接把currentLev改成最低则全无log打印
  */
-public class LogUtils {
+public class LLog {
 
     private static int current_lev = 4;
     private static final int DEBUG_LEV = 4;

@@ -3,7 +3,7 @@ package com.example.amoy_coupon.presenter.impl;
 import com.example.amoy_coupon.model.Api;
 import com.example.amoy_coupon.model.domain.Categories;
 import com.example.amoy_coupon.presenter.IHomePresenter;
-import com.example.amoy_coupon.utils.LogUtils;
+import com.example.amoy_coupon.utils.LLog;
 import com.example.amoy_coupon.utils.RetrofitManager;
 import com.example.amoy_coupon.view.IHomeCallback;
 
@@ -32,7 +32,7 @@ public class HomePresenterImpl implements IHomePresenter {
             public void onResponse(Call<Categories> call, Response<Categories> response) {
                 //成功-结果
                 int code = response.code();
-                LogUtils.d(HomePresenterImpl.this,"onResponse-->code"+code);
+                LLog.d(HomePresenterImpl.this,"onResponse-->code"+code);
                 if (code == HttpURLConnection.HTTP_OK){
                     //请求成功
                     Categories categories = response.body();
@@ -46,9 +46,9 @@ public class HomePresenterImpl implements IHomePresenter {
 
                 }else {
                     //请求失败
-                    LogUtils.e(HomePresenterImpl.this,"请求失败");
+                    LLog.e(HomePresenterImpl.this,"请求失败");
                     if (mCallback!=null) {
-                        mCallback.onNetworkError();
+                        mCallback.onError();
                     }
                 }
 
@@ -56,9 +56,9 @@ public class HomePresenterImpl implements IHomePresenter {
             @Override
             public void onFailure(Call<Categories> call, Throwable t) {
                 //失败-结果
-                LogUtils.e(HomePresenterImpl.this,"请求错误"+t);
+                LLog.e(HomePresenterImpl.this,"请求错误"+t);
                 if (mCallback!=null) {
-                    mCallback.onNetworkError();
+                    mCallback.onError();
                 }
 
             }
@@ -66,12 +66,12 @@ public class HomePresenterImpl implements IHomePresenter {
     }
 
     @Override
-    public void registerCallback(IHomeCallback callback) {
-        this.mCallback = callback;
+    public void registerViewCallback(IHomeCallback callback) {
+        mCallback = callback;
     }
 
     @Override
-    public void unregisterCallback(IHomeCallback callback) {
-        mCallback = null;
+    public void unregisterViewCallback(IHomeCallback callback) {
+        mCallback = callback;
     }
 }

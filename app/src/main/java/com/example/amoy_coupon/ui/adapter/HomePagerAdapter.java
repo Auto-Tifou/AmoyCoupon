@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomePagerAdapter extends FragmentPagerAdapter {
+    private static final String TAG = "HomePagerAdapter";
 
     private List<Categories.DataBean> categoryList = new ArrayList<>();
 
@@ -29,7 +30,8 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        HomePagerFragment homePagerFragment = new HomePagerFragment();
+        Categories.DataBean dataBean = categoryList.get(position);
+        HomePagerFragment homePagerFragment = HomePagerFragment.nerInstance(dataBean);
         return homePagerFragment;
     }
 

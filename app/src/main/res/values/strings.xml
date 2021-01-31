@@ -9,4 +9,8 @@
 
 <!--    hint-->
     <string name="text_home_search_hint">&#160;&#160;&#160;搜索优惠券..</string>
+    <string name="text_net_error">网络出错,请点击重试…</string>
+
+<!--    item-->
+    <string name="text_goods_prise">省%1$d元</string>
 </resources>

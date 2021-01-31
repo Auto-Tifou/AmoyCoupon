@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.amoy_coupon.R;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public abstract class BaseFragment extends Fragment {
@@ -29,6 +30,18 @@ public abstract class BaseFragment extends Fragment {
 
     private Unbinder mBind;
     private FrameLayout mBaseContainer;
+
+    @OnClick(R.id.lin_net_error)
+    public void retry(){
+        onRetryClick();
+    }
+
+    /**
+     * fragment网络加载出错重新加载内容
+     */
+    protected void onRetryClick() {
+
+    }
 
     @Nullable
     @Override

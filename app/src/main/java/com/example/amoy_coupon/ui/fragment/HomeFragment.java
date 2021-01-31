@@ -1,12 +1,7 @@
 package com.example.amoy_coupon.ui.fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.amoy_coupon.R;
@@ -21,6 +16,8 @@ import com.google.android.material.tabs.TabLayout;
 import butterknife.BindView;
 
 public class HomeFragment extends BaseFragment implements IHomeCallback {
+
+    private static final String TAG = "HomeFragment";
 
     @BindView(R.id.home_indicator)
     TabLayout mTabLayout;
@@ -48,7 +45,7 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     protected void initPresenter() {
         //创建Presenter
         mHomePresenter = new HomePresenterImpl();
-        mHomePresenter.registerCallback(this);
+        mHomePresenter.registerViewCallback(this);
     }
 
     @Override
@@ -68,7 +65,7 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     }
 
     @Override
-    public void onNetworkError() {
+    public void onError() {
         setUpState(State.ERROR);
     }
 
@@ -85,7 +82,15 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     @Override
     protected void release() {
         if (mHomePresenter != null){
-            mHomePresenter.unregisterCallback(this);
+            mHomePresenter.unregisterViewCallback(this);
+        }
+    }
+
+    @Override
+    protected void onRetryClick() {
+        //网络出错点击重试，重新加载分类
+        if (mHomePresenter!= null){
+            mHomePresenter.getCategories();
         }
     }
 }
