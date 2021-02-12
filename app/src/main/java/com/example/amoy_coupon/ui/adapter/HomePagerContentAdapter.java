@@ -1,6 +1,7 @@
 package com.example.amoy_coupon.ui.adapter;
 
-import android.media.Image;
+import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import butterknife.ButterKnife;
 
 public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerContentAdapter.InnerHolder> {
 
-    List<HomePagerContent.DataBean> data = new ArrayList<>();
+    List<HomePagerContent.DataBean> mData = new ArrayList<>();
 
     @NonNull
     @Override
@@ -35,20 +36,27 @@ public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerConte
 
     @Override
     public void onBindViewHolder(@NonNull HomePagerContentAdapter.InnerHolder holder, int position) {
-        HomePagerContent.DataBean dataBean = data.get(position);
+        HomePagerContent.DataBean dataBean = mData.get(position);
         //设置数据
         holder.setData(dataBean);
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return mData.size();
     }
 
     public void setData(List<HomePagerContent.DataBean> content) {
-        data.clear();
-        data.addAll(content);
+        mData.clear();
+        mData.addAll(content);
         notifyDataSetChanged();
+    }
+
+    public void addData(List<HomePagerContent.DataBean> contents) {
+        int oldSize = mData.size();
+        mData.addAll(contents);
+        notifyItemRangeChanged(oldSize,contents.size());
+
     }
 
     public class InnerHolder extends RecyclerView.ViewHolder{
@@ -58,6 +66,12 @@ public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerConte
         public TextView title;
         @BindView(R.id.goods_prise)
         public TextView prise;
+        @BindView(R.id.goods_after_off_prise)
+        public TextView finalPriseTv;
+        @BindView(R.id.goods_original_prise)
+        public TextView originalPrise;
+        @BindView(R.id.goods_sell_count)
+        public TextView sellCount;
 
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,9 +79,17 @@ public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerConte
         }
 
         public void setData(HomePagerContent.DataBean dataBean) {
+            Context context = itemView.getContext();
             title.setText(dataBean.getTitle());
-            prise.setText(String.format(itemView.getContext().getString(R.string.text_goods_prise),dataBean.getCoupon_amount()));
-            Glide.with(itemView.getContext()).load(UrlUtils.getCoverPath(dataBean.getPict_url())).into(cover);
+            String finalPrise = dataBean.getZk_final_price();
+            long couponAmount = dataBean.getCoupon_amount();
+            float resultPrise = Float.parseFloat(finalPrise)-couponAmount;
+            prise.setText(String.format(itemView.getContext().getString(R.string.item_goods_prise),couponAmount));
+            Glide.with(context).load(UrlUtils.getCoverPath(dataBean.getPict_url())).into(cover);
+            finalPriseTv.setText(String.format("%.2f",resultPrise));
+            originalPrise.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            originalPrise.setText(String.format(context.getString(R.string.item_goods_original_prise),finalPrise));
+            sellCount.setText(String.format(context.getString(R.string.item_goods_sell_count),dataBean.getVolume()));
         }
     }
 }

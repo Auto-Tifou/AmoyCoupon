@@ -1,5 +1,7 @@
 package com.example.amoy_coupon.presenter.impl;
 
+import androidx.viewpager.widget.PagerAdapter;
+
 import com.example.amoy_coupon.model.Api;
 import com.example.amoy_coupon.model.domain.HomePagerContent;
 import com.example.amoy_coupon.presenter.ICategoryPagerPresenter;
@@ -26,6 +28,7 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
     private Map<Integer, Integer> pagerInfo = new HashMap<>();
 
     public static final int DEFAULT_PAGE = 1;
+    private Integer mCurrentPage;
 
     private CategoryPagePresenterImpl() {
 
@@ -48,15 +51,13 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
             }
         }
         //根据分类id加载内容
-        Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
-        Api api = retrofit.create(Api.class);
+
         Integer targetPager = pagerInfo.get(categoryId);
         if (targetPager == null) {
             targetPager = DEFAULT_PAGE;
             pagerInfo.put(categoryId, DEFAULT_PAGE);
         }
-        String homePagerUrl = UrlUtils.createHomePagerUrl(categoryId, targetPager);
-        Call<HomePagerContent> task = api.getHomePageContent(homePagerUrl);
+        Call<HomePagerContent> task = createTask(categoryId, targetPager);
         task.enqueue(new Callback<HomePagerContent>() {
             @Override
             public void onResponse(Call<HomePagerContent> call, Response<HomePagerContent> response) {
@@ -79,6 +80,13 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
 
     }
 
+    private Call<HomePagerContent> createTask(int categoryId, Integer targetPager) {
+        String homePagerUrl = UrlUtils.createHomePagerUrl(categoryId, targetPager);
+        Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
+        Api api = retrofit.create(Api.class);
+        return api.getHomePageContent(homePagerUrl);
+    }
+
     private void handleNetworkError(int categoryId) {
         for (ICategoryPagerCallback callback : mCallbacks) {
             if (callback.getCategoryId()==categoryId) {
@@ -89,11 +97,14 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
 
     private void handleHomePageContentResult(HomePagerContent pagerContent, int categoryId) {
         //通知UI层更新数据
+        List<HomePagerContent.DataBean> data = pagerContent.getData();
         for (ICategoryPagerCallback callback : mCallbacks){
             if (callback.getCategoryId()==categoryId) {
                 if (pagerContent == null || pagerContent.getData().size() == 0){
                     callback.onEmpty();
                 }else {
+                    List<HomePagerContent.DataBean> looperData = data.subList(data.size() - 5, data.size());
+                    callback.onLooperListLoaded(looperData);
                     callback.onContentLoaded(pagerContent.getData());
                 }
             }
@@ -102,7 +113,52 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
 
     @Override
     public void loaderMore(int categoryId) {
+        //加载更多数据
+        mCurrentPage = pagerInfo.get(categoryId);
+        if (mCurrentPage == null){
+            mCurrentPage = 1;
+        }
+        mCurrentPage++;
+        Call<HomePagerContent> task = createTask(categoryId, mCurrentPage);
+        task.enqueue(new Callback<HomePagerContent>() {
+            @Override
+            public void onResponse(Call<HomePagerContent> call, Response<HomePagerContent> response) {
+                int code = response.code();
+                if (code == HttpURLConnection.HTTP_OK){
+                    HomePagerContent result = response.body();
+                    handleLoaderResult(result,categoryId);
+                }else{
+                    handleLoaderMoreError(categoryId);
+                }
+            }
 
+            @Override
+            public void onFailure(Call<HomePagerContent> call, Throwable t) {
+                handleLoaderMoreError(categoryId);
+            }
+        });
+    }
+
+    private void handleLoaderResult(HomePagerContent result, int categoryId) {
+        for (ICategoryPagerCallback callback : mCallbacks) {
+            if (callback.getCategoryId() == categoryId){
+                if (result == null || result.getData().size() == 0) {
+                    callback.onLoaderMoreEmpty();
+                }else {
+                    callback.onLoaderMoreLoaded(result.getData());
+                }
+            }
+        }
+    }
+
+    private void handleLoaderMoreError(int categoryId) {
+        mCurrentPage--;
+        pagerInfo.put(categoryId,mCurrentPage);
+        for (ICategoryPagerCallback callback : mCallbacks) {
+            if (callback.getCategoryId() == categoryId){
+                callback.onLoaderMoreError();
+            }
+        }
     }
 
     @Override

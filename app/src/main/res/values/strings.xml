@@ -12,5 +12,8 @@
     <string name="text_net_error">网络出错,请点击重试…</string>
 
 <!--    item-->
-    <string name="text_goods_prise">省%1$d元</string>
+    <string name="item_goods_prise">省%1$d元</string>
+    <string name="item_goods_original_prise">￥%1$s</string>
+    <string name="item_goods_prise_after">劵后价：</string>
+    <string name="item_goods_sell_count">%1$d人已经购买</string>
 </resources>

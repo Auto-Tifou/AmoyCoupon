@@ -10,7 +10,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:id="@+id/goods_cover"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@mipmap/ic_launcher"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,21 +46,26 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/item_goods_prise_after"
                 android:textColor="@color/purple_200" />
 
             <TextView
+                android:id="@+id/goods_after_off_prise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/purple_200" />
             <TextView
+                android:id="@+id/goods_original_prise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:textSize="10sp"
                 android:textColor="@color/colorTextNormal" />
             <TextView
+                android:id="@+id/goods_sell_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:textColor="@color/colorTextNormal" />
 
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,9 +52,17 @@ public abstract class BaseFragment extends Fragment {
         loadStatesView(inflater,container);
         mBind = ButterKnife.bind(this, rootView);
         initView(rootView);
+        initListener();
         initPresenter();
         loadData();
         return rootView;
+    }
+
+    /**
+     * 子类设置相关事件
+     */
+    protected void initListener() {
+
     }
 
     /**
@@ -136,6 +145,10 @@ public abstract class BaseFragment extends Fragment {
 
     protected void loadData() {
         //加载数据
+    }
+
+    protected void showToast(String message) {
+        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
     }
 
 
